@@ -9,7 +9,7 @@ export class Cloudinary {
 
   @Prop() cloudName: string;
   @Prop() publicId: string;
-  @Prop() version: string = "1";
+  @Prop() format: string;
 
   // Image attributes
   @Prop() alt: string;
@@ -32,8 +32,12 @@ export class Cloudinary {
       .join(',')
   }
 
+  private getFormat(): string {
+    return this.format ? `.${this.format}` : ''
+  }
+
   private getSrc(): string {
-    return `https://res.cloudinary.com/${this.cloudName}/image/upload/${this.getTransformations()}/v${this.version}/${this.publicId}.png`
+    return `https://res.cloudinary.com/${this.cloudName}/image/upload/${this.getTransformations()}/${this.publicId}${this.getFormat()}`
   }
 
   render() {

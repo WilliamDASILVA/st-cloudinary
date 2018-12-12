@@ -16,18 +16,18 @@ export namespace Components {
     'alt': string;
     'cloudName': string;
     'crop': string;
+    'format': string;
     'height': string;
     'publicId': string;
-    'version': string;
     'width': string;
   }
   interface StCloudinaryAttributes extends StencilHTMLAttributes {
     'alt'?: string;
     'cloudName'?: string;
     'crop'?: string;
+    'format'?: string;
     'height'?: string;
     'publicId'?: string;
-    'version'?: string;
     'width'?: string;
   }
 }
