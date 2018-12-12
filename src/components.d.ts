@@ -13,7 +13,6 @@ import '@stencil/core';
 export namespace Components {
 
   interface StCloudinary {
-    'alt': string;
     'cloudName': string;
     'crop': string;
     'format': string;
@@ -22,7 +21,6 @@ export namespace Components {
     'width': string;
   }
   interface StCloudinaryAttributes extends StencilHTMLAttributes {
-    'alt'?: string;
     'cloudName'?: string;
     'crop'?: string;
     'format'?: string;

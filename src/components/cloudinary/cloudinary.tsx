@@ -1,4 +1,4 @@
-import { Component, Prop } from '@stencil/core';
+import { Component, Prop, Element } from '@stencil/core';
 
 @Component({
   tag: 'st-cloudinary',
@@ -11,12 +11,27 @@ export class Cloudinary {
   @Prop() publicId: string;
   @Prop() format: string;
 
-  // Image attributes
-  @Prop() alt: string;
-
   @Prop() width: string;
   @Prop() height: string;
   @Prop() crop: string = 'fill';
+
+  @Element() element: HTMLElement;
+
+  private getAttributes(): object {
+    /**
+     * @var unallowedAttributes Attributes to ignore from the img tag element.
+     */
+    const unallowedAttributes = ['crop', 'format', 'public-id', 'cloud-name']
+
+    const attrs = {}
+    Array
+      .from(this.element.attributes)
+      .forEach((attr) => {
+        if (!unallowedAttributes.includes(attr.name)) attrs[attr.name] = attr.value
+      })
+
+    return attrs
+  }
 
   private getTransformations(): string {
     const transformations = {
@@ -44,7 +59,7 @@ export class Cloudinary {
     return <picture>
       <img
         src={this.getSrc()}
-        alt={this.alt}
+        {...this.getAttributes()}
       />
     </picture>;
   }
