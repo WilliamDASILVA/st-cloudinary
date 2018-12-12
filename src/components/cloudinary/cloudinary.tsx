@@ -1,4 +1,4 @@
-import { Component, Prop } from '@stencil/core';
+import { Component, Prop, Element } from '@stencil/core';
 
 @Component({
   tag: 'st-cloudinary',
@@ -9,14 +9,29 @@ export class Cloudinary {
 
   @Prop() cloudName: string;
   @Prop() publicId: string;
-  @Prop() version: string = "1";
-
-  // Image attributes
-  @Prop() alt: string;
+  @Prop() format: string;
 
   @Prop() width: string;
   @Prop() height: string;
   @Prop() crop: string = 'fill';
+
+  @Element() element: HTMLElement;
+
+  private getAttributes(): object {
+    /**
+     * @var unallowedAttributes Attributes to ignore from the img tag element.
+     */
+    const unallowedAttributes = ['crop', 'format', 'public-id', 'cloud-name']
+
+    const attrs = {}
+    Array
+      .from(this.element.attributes)
+      .forEach((attr) => {
+        if (!unallowedAttributes.includes(attr.name)) attrs[attr.name] = attr.value
+      })
+
+    return attrs
+  }
 
   private getTransformations(): string {
     const transformations = {
@@ -32,15 +47,19 @@ export class Cloudinary {
       .join(',')
   }
 
+  private getFormat(): string {
+    return this.format ? `.${this.format}` : ''
+  }
+
   private getSrc(): string {
-    return `https://res.cloudinary.com/${this.cloudName}/image/upload/${this.getTransformations()}/v${this.version}/${this.publicId}.png`
+    return `https://res.cloudinary.com/${this.cloudName}/image/upload/${this.getTransformations()}/${this.publicId}${this.getFormat()}`
   }
 
   render() {
     return <picture>
       <img
         src={this.getSrc()}
-        alt={this.alt}
+        {...this.getAttributes()}
       />
     </picture>;
   }
